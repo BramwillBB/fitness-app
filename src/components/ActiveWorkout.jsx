@@ -1,10 +1,9 @@
 // src/components/ActiveWorkout.jsx
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import RestTimer from './RestTimer';
-import { loadPreviousLogs } from '../hooks/useStorage';
 
-const ActiveWorkout = ({ program, onFinishWorkout }) => {
-    const previousLogs = useMemo(() => loadPreviousLogs(), []);
+const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout }) => {
+    const previousLogs = prevLogsProp || {};
 
     // Build initial log state: each exercise has an array of set entries
     const buildInitialLogs = () => {
