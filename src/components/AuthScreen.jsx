@@ -20,7 +20,7 @@ const AuthScreen = ({ onGoogleLogin, onEmailLogin, onEmailSignup, error }) => {
         <div className="auth-screen">
             <div className="auth-card card">
                 <div className="auth-hero">
-                    <h2>Visceral Fat Protocol</h2>
+                    <h2>IronCore</h2>
                     <p className="text-muted">Sign in to sync your workouts across all your devices</p>
                 </div>
 

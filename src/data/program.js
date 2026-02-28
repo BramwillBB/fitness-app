@@ -250,6 +250,6 @@ export const GAMIFICATION = {
     { level: 5, title: "Elite", xpRequired: 2000, badge: "🔥" },
     { level: 6, title: "Champion", xpRequired: 3500, badge: "🏆" },
     { level: 7, title: "Legend", xpRequired: 5500, badge: "👑" },
-    { level: 8, title: "Visceral Destroyer", xpRequired: 8000, badge: "⚡" }
+    { level: 8, title: "Ironclad", xpRequired: 8000, badge: "⚡" }
   ]
 };

@@ -1,6 +1,6 @@
-# Visceral Fat Protocol — Fitness Tracker
+# IronCore — Fitness Tracker
 
-A modern, mobile-optimized web app for managing and tracking a clinical 4-day exercise program designed for visceral fat loss in middle-aged males. Built on peer-reviewed endocrinology and exercise physiology research.
+A modern, mobile-optimized web app for managing and tracking a science-backed 4-day exercise program. Built with gamification, smart analytics, and cloud sync.
 
 ## Features
 

@@ -118,9 +118,9 @@ function App() {
     <div className="app-container">
       <header>
         <div>
-          <h1>Visceral Fat Protocol</h1>
+          <h1>IronCore</h1>
           <p className="text-muted">
-            {user ? `Welcome, ${user.displayName || user.email}` : 'Clinical 4-Day Plan Tracker'}
+            {user ? `Welcome, ${user.displayName || user.email}` : 'Train Smarter. Track Everything.'}
           </p>
         </div>
         <div style={{ display: 'flex', gap: 'var(--spacing-1)', alignItems: 'center' }}>
@@ -171,7 +171,7 @@ function App() {
       </main>
 
       <footer style={{ marginTop: 'var(--spacing-5)', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.85rem', paddingBottom: 'var(--spacing-3)' }}>
-        <p>Based on peer-reviewed endocrinology and exercise physiology data.</p>
+        <p>Science-backed training · Built for results</p>
         {user && <p style={{ fontSize: '0.75rem', marginTop: '4px' }}>☁️ Synced to cloud</p>}
       </footer>
     </div>
