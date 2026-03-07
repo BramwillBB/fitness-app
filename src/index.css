@@ -1,27 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
 
 /* ===================================
-   THEMING & GLOBAL VARIABLES
+   GLOBAL VARIABLES (LIGHT MODE)
    =================================== */
 :root {
   /* Core Palette */
-  --color-primary: #00d2ff;
-  --color-secondary: #3a7bd5;
-  --color-accent: #ff4b2b;
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-xp: #a855f7;
+  --color-primary: #0284c7;
+  --color-secondary: #2563eb;
+  --color-accent: #dc2626;
+  --color-success: #059669;
+  --color-warning: #d97706;
+  --color-xp: #7c3aed;
 
   /* Backgrounds */
-  --color-bg-main: #0b0f19;
-  --color-bg-surface: rgba(26, 31, 44, 0.7);
-  --color-bg-card: rgba(30, 41, 59, 0.7);
-  --color-bg-input: rgba(15, 23, 42, 0.6);
+  --color-bg-main: #f1f5f9;
+  --color-bg-surface: rgba(255, 255, 255, 0.85);
+  --color-bg-card: rgba(255, 255, 255, 0.95);
+  --color-bg-input: rgba(241, 245, 249, 0.95);
 
   /* Text */
-  --color-text-main: #f8fafc;
-  --color-text-muted: #94a3b8;
-  --color-border: rgba(148, 163, 184, 0.12);
+  --color-text-main: #0f172a;
+  --color-text-muted: #64748b;
+  --color-border: rgba(15, 23, 42, 0.1);
 
   /* 8px Grid System */
   --spacing-1: 8px;
@@ -43,16 +43,6 @@
 
   /* Motion */
   --transition-speed: 0.3s;
-}
-
-[data-theme='light'] {
-  --color-bg-main: #f1f5f9;
-  --color-bg-surface: rgba(255, 255, 255, 0.8);
-  --color-bg-card: rgba(255, 255, 255, 0.9);
-  --color-bg-input: rgba(241, 245, 249, 0.9);
-  --color-text-main: #0f172a;
-  --color-text-muted: #64748b;
-  --color-border: rgba(15, 23, 42, 0.1);
 }
 
 /* ===================================
@@ -86,8 +76,8 @@ body {
   font-family: var(--font-family);
   background: var(--color-bg-main);
   background-image:
-    radial-gradient(circle at top right, rgba(0, 210, 255, 0.08), transparent 40%),
-    radial-gradient(circle at bottom left, rgba(58, 123, 213, 0.08), transparent 40%);
+    radial-gradient(circle at top right, rgba(2, 132, 199, 0.06), transparent 40%),
+    radial-gradient(circle at bottom left, rgba(37, 99, 235, 0.06), transparent 40%);
   background-attachment: fixed;
   color: var(--color-text-main);
   line-height: 1.5;
@@ -176,9 +166,9 @@ h3 {
 }
 
 /* ===================================
-   THEME TOGGLE
+   HEADER BUTTONS
    =================================== */
-.theme-toggle {
+.header-btn {
   background: var(--color-bg-surface);
   border: 1px solid var(--color-border);
   color: var(--color-text-main);
@@ -191,11 +181,13 @@ h3 {
   justify-content: center;
   transition: all var(--transition-speed) ease;
   font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.theme-toggle:hover {
+.header-btn:hover {
   background: var(--color-bg-card);
   transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* ===================================

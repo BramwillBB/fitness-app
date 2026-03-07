@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import AuthScreen from './components/AuthScreen';
 import Dashboard from './components/Dashboard';
 import ActiveWorkout from './components/ActiveWorkout';
@@ -11,7 +11,6 @@ import { GAMIFICATION } from './data/program';
 import './index.css';
 
 function App() {
-  const [theme, setTheme] = useState('dark');
   const [view, setView] = useState('dashboard'); // 'auth' | 'dashboard' | 'workout' | 'summary'
   const [activeProgram, setActiveProgram] = useState(null);
   const [lastSummary, setLastSummary] = useState(null);
@@ -24,12 +23,6 @@ function App() {
   } = useFirestore(user?.uid || null);
 
   const { requestWakeLock, releaseWakeLock } = useWakeLock();
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
   const handleStartWorkout = (program) => {
     setActiveProgram(program);
@@ -125,15 +118,12 @@ function App() {
         </div>
         <div style={{ display: 'flex', gap: 'var(--spacing-1)', alignItems: 'center' }}>
           {view === 'workout' && (
-            <button className="theme-toggle" onClick={handleBackToDashboard} aria-label="Back to dashboard" title="Back to Dashboard">←</button>
+            <button className="header-btn" onClick={handleBackToDashboard} aria-label="Back to dashboard" title="Back to Dashboard">←</button>
           )}
-          <button className="theme-toggle" onClick={toggleTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
           {user ? (
-            <button className="theme-toggle" onClick={logout} aria-label="Sign out" title="Sign Out">🚪</button>
+            <button className="header-btn" onClick={logout} aria-label="Sign out" title="Sign Out">🚪</button>
           ) : (
-            <button className="theme-toggle" onClick={() => setView('auth')} aria-label="Sign in" title="Sign In">👤</button>
+            <button className="header-btn" onClick={() => setView('auth')} aria-label="Sign in" title="Sign In">👤</button>
           )}
         </div>
       </header>
