@@ -1,238 +1,239 @@
 export const exerciseProgram = [
   {
     day: "Tuesday",
-    focus: "Upper Body & Cardio",
+    focus: "Upper Body Push/Pull + Metcon",
     timeLimit: "Max 50 Mins",
-    sequence: "Resistance (25 min) → Cardio (25 min)",
+    sequence: "Resistance (30 min) → Metcon Finisher (20 min)",
     workouts: [
       {
         id: "tue_r1",
         category: "Resistance",
-        name: "Dumbbell Bench Press",
+        name: "Incline Dumbbell Press",
         sets: 4,
         reps: "8-10",
-        defaultRest: 75,
-        muscleGroup: "Chest",
-        tip: "Retract your shoulder blades and press them into the bench for a stable base. Lower the dumbbells to chest level with a controlled 2-second eccentric, then drive up explosively. Avoid flaring your elbows past 45°."
+        defaultRest: 90,
+        muscleGroup: "Upper Chest",
+        tip: "Set bench to 30°. Keep elbows tucked slightly (45-degree angle) to protect the shoulder joints. Drive the weight up explosively, lower under control for 3 seconds."
       },
       {
         id: "tue_r2",
         category: "Resistance",
-        name: "Seated Cable Rows",
+        name: "T-Bar Row or Seated Cable Row",
         sets: 4,
         reps: "8-10",
-        defaultRest: 75,
+        defaultRest: 90,
         muscleGroup: "Back",
-        tip: "Sit tall with a slight forward lean at the start. Pull the handle to your lower ribcage by driving your elbows straight back. Squeeze your shoulder blades together for a full 1-second contraction before the controlled release."
+        tip: "Keep your chest up and lower back tight. Pull the weight towards your belly button, squeezing your shoulder blades together. This builds back thickness without straining the lower back."
       },
       {
         id: "tue_r3",
         category: "Resistance",
-        name: "Overhead Dumbbell Press",
-        sets: 2,
+        name: "Dumbbell Arnold Press",
+        sets: 3,
         reps: "10-12",
-        defaultRest: 75,
+        defaultRest: 60,
         muscleGroup: "Shoulders",
-        tip: "Brace your core and avoid arching your lower back. Press dumbbells overhead in a slight arc, finishing with the weights directly above your shoulders. Lower under control to ear level."
+        tip: "Start with palms facing you at shoulder level, press up while rotating palms outward. This hits all three heads of the deltoid and promotes shoulder mobility."
+      },
+      {
+        id: "tue_r4",
+        category: "Resistance",
+        name: "Hammer Curls to Tricep Extension",
+        sets: 3,
+        reps: "12 (Each)",
+        defaultRest: 60,
+        muscleGroup: "Arms",
+        tip: "Superset: Do hammer curls (palms facing each other, great for elbow health) immediately followed by overhead tricep extensions. Burns out the arms quickly."
       },
       {
         id: "tue_c1",
-        category: "Cardio",
-        name: "Treadmill Incline Walk",
-        duration: "25 mins",
+        category: "HIIT",
+        name: "Kettlebell Swings",
+        duration: "10 mins",
         defaultRest: 0,
-        details: "Speed 5.5-6.5 km/h, Incline 6-10%, HR 120-140 bpm",
-        tip: "Maintain an upright posture—do NOT hold the handrails. Pump your arms naturally. This sustained Zone 2 effort forces direct fatty acid oxidation and builds aerobic base without CNS fatigue."
+        details: "10 Rounds: 30s Swings → 30s Rest",
+        tip: "This is a hip hinge, not a squat. Drive the kettlebell up using the power of your glutes and hamstrings. Highly metabolic for maximum fat loss while protecting knees."
       }
     ]
   },
   {
     day: "Thursday",
-    focus: "Lower Body & HIIT",
+    focus: "Lower Body & Core + HIIT",
     timeLimit: "Max 50 Mins",
-    sequence: "Resistance (25 min) → HIIT + Cardio (25 min)",
+    sequence: "Resistance (35 min) → HIIT (15 min)",
     workouts: [
       {
         id: "thu_r1",
         category: "Resistance",
-        name: "Leg Press or Squats",
+        name: "Hack Squat or Leg Press",
         sets: 4,
         reps: "8-10",
         defaultRest: 90,
-        muscleGroup: "Quads/Glutes",
-        tip: "Place feet shoulder-width apart, toes slightly out. Lower until thighs are at least parallel to the platform. Drive through your heels and mid-foot—never let your knees cave inward."
+        muscleGroup: "Quads",
+        tip: "Great alternative to barbell squats for a 48-year-old; loads the quads heavily without compressing the spine. Control the weight down deep, drive up without locking knees."
       },
       {
         id: "thu_r2",
         category: "Resistance",
-        name: "Romanian Deadlifts or Leg Curls",
-        sets: 4,
-        reps: "8-10",
+        name: "Dumbbell Walking Lunges",
+        sets: 3,
+        reps: "10-12 per leg",
         defaultRest: 90,
-        muscleGroup: "Hamstrings",
-        tip: "For RDLs: push your hips back as if closing a car door behind you. Keep the bar or dumbbells dragging along your thighs. Maintain a flat back and feel a deep stretch in your hamstrings at the bottom."
+        muscleGroup: "Glutes/Legs",
+        tip: "Take long, deliberate steps. Keep your torso upright. This is excellent for unilateral strength, fixing imbalances, and spiking the heart rate."
       },
       {
         id: "thu_r3",
         category: "Resistance",
-        name: "Planks or Cable Crunches",
-        sets: 2,
-        reps: "To failure / 60s",
+        name: "Glute Bridge or Hip Thrust",
+        sets: 3,
+        reps: "12-15",
+        defaultRest: 60,
+        muscleGroup: "Hamstrings/Glutes",
+        tip: "Drive through the heels and squeeze the glutes hard for a 2-second pause at the top. Essential for lower back health and posterior chain strength."
+      },
+      {
+        id: "thu_r4",
+        category: "Resistance",
+        name: "Hanging Leg Raises",
+        sets: 3,
+        reps: "To failure",
         defaultRest: 60,
         muscleGroup: "Core",
-        tip: "For planks: squeeze glutes, brace abs as if about to be punched, keep a straight line from head to heels. For cable crunches: flex your spine by pulling your ribcage toward your pelvis—don't just bend at the hips."
+        tip: "Hang from a pull-up bar (or use Captain's Chair). Focus on rolling your pelvis upward. This targets the lower abs directly to help build the 'six pack' foundation."
       },
       {
         id: "thu_c1",
         category: "HIIT",
-        name: "Stationary Bike Sprints",
+        name: "Assault Bike or Rower Sprints",
         duration: "15 mins",
         defaultRest: 0,
-        details: "6 Rounds: 30s Max Effort (100+ RPM, Resistance 8-10) → 60s Recovery (50-60 RPM, Resistance 3)",
-        tip: "During sprints, stay seated and drive through the balls of your feet. Your heart rate should spike above 160 bpm. During recovery, keep pedaling slowly—never stop completely. This protocol acutely spikes growth hormone secretion."
-      },
-      {
-        id: "thu_c2",
-        category: "Cardio",
-        name: "Rowing Machine",
-        duration: "10 mins",
-        defaultRest: 0,
-        details: "22-26 strokes/min, HR 120-140 bpm",
-        tip: "Drive with your legs first (60% of power), then lean back slightly, and finish the pull to your lower ribs. Maintain a steady cadence. This immediately oxidizes the fatty acids mobilized by the HIIT session."
+        details: "8 Rounds: 20s ALL OUT Sprint → 40s Slow Recovery",
+        tip: "Low impact on the joints but incredibly demanding on the cardiovascular system. Go absolute maximum effort during the 20 seconds. This shreds visceral fat."
       }
     ]
   },
   {
     day: "Saturday",
-    focus: "Upper Body Heavy & Cardio",
+    focus: "Full Body Strength & Power",
     timeLimit: "Max 60 Mins",
-    sequence: "Resistance (40-45 min) → Cardio (15-20 min)",
+    sequence: "Resistance (45 min) → Cardio (15 min)",
     workouts: [
       {
         id: "sat_r1",
         category: "Resistance",
-        name: "Incline Dumbbell Press",
-        sets: 3,
-        reps: "8-10",
-        defaultRest: 90,
-        muscleGroup: "Upper Chest",
-        tip: "Set bench to 30-45°. Maintain a slight arch in your upper back. Press the dumbbells to full lockout but don't clang them at the top. Use a 3-second eccentric for maximum time under tension."
+        name: "Trap Bar Deadlift",
+        sets: 4,
+        reps: "6-8",
+        defaultRest: 120,
+        muscleGroup: "Full Body/Legs",
+        tip: "The trap bar keeps the weight centered, significantly reducing lower back shear stress compared to conventional deadlifts. Stand tall and squeeze glutes at the top."
       },
       {
         id: "sat_r2",
         category: "Resistance",
-        name: "Push-ups or Chest Flyes",
-        sets: 3,
-        reps: "Near failure",
+        name: "Neutral Grip Pull-ups (or Pulldowns)",
+        sets: 4,
+        reps: "8-10",
         defaultRest: 90,
-        muscleGroup: "Chest",
-        tip: "For push-ups: hands slightly wider than shoulders, full range of motion (chest to floor). For flyes: keep a slight bend in elbows, lower the weights in a wide arc until you feel a deep chest stretch, then squeeze together."
+        muscleGroup: "Back/Biceps",
+        tip: "Palms facing each other. This grip is much friendlier on the elbows and shoulders for men over 40. Pull your chest to the bar."
       },
       {
         id: "sat_r3",
         category: "Resistance",
-        name: "Lat Pulldowns or Pull-ups",
+        name: "Dumbbell Push Press",
         sets: 3,
         reps: "8-10",
         defaultRest: 90,
-        muscleGroup: "Back (Lats)",
-        tip: "Lean back slightly (about 15°). Pull the bar to your upper chest by driving your elbows down and back. Initiate the movement with your lats, not your biceps. Squeeze at the bottom for 1 second."
+        muscleGroup: "Shoulders/Power",
+        tip: "Dip slightly at the knees and use leg drive to help press the dumbbells overhead. Great for building upper body power and core stability."
       },
       {
         id: "sat_r4",
         category: "Resistance",
-        name: "Dumbbell Rows",
+        name: "Heavy Farmer's Carries",
         sets: 3,
-        reps: "8-10",
+        reps: "40 meters",
         defaultRest: 90,
-        muscleGroup: "Back (Mid)",
-        tip: "One knee and hand on the bench for support. Pull the dumbbell toward your hip, not your chest. Keep your torso parallel to the floor and avoid rotating your body to heave the weight."
-      },
-      {
-        id: "sat_r5",
-        category: "Resistance",
-        name: "Lateral Raises",
-        sets: 4,
-        reps: "12-15",
-        defaultRest: 60,
-        muscleGroup: "Shoulders (Lateral)",
-        tip: "Slight bend at the elbows, lift to shoulder height—not higher. Lead with your pinkies slightly to emphasize the medial deltoid. Use a controlled 2-second raise and 3-second lower. Ego-check the weight; form is king."
+        muscleGroup: "Core/Grip",
+        tip: "Grab the heaviest dumbbells or kettlebells you can hold. Walk with perfect, upright posture. This builds a bulletproof core and insane grip strength."
       },
       {
         id: "sat_c1",
         category: "Cardio",
-        name: "Stationary Bike",
-        duration: "15-20 mins",
+        name: "Steady State Incline Walk",
+        duration: "15 mins",
         defaultRest: 0,
-        details: "70-80 RPM, HR 120-140 bpm, Resistance Lvl 4-5",
-        tip: "Keep a tall, relaxed posture. Maintain a consistent cadence—avoid surging or slowing. This low-intensity finisher maximizes fat oxidation while keeping CNS fatigue minimal for Sunday's session."
+        details: "Speed 5-6 km/h, Incline 10-12%",
+        tip: "Cool down and flush the legs. Keeping it strictly Zone 2 (can hold a conversation) builds the aerobic base and aids recovery."
       }
     ]
   },
   {
     day: "Sunday",
-    focus: "Lower Body Heavy & Cardio",
+    focus: "Hypertrophy & Abs Finisher",
     timeLimit: "Max 60 Mins",
-    sequence: "Resistance (40-45 min) → Cardio (15-20 min)",
+    sequence: "Resistance (40 min) → Core/Metcon (20 min)",
     workouts: [
       {
         id: "sun_r1",
         category: "Resistance",
-        name: "Walking Lunges or Split Squats",
-        sets: 3,
-        reps: "10-12 per leg",
+        name: "Dumbbell Floor Press",
+        sets: 4,
+        reps: "8-10",
         defaultRest: 90,
-        muscleGroup: "Quads/Glutes",
-        tip: "Take a long stride. Your front knee should track over your toes without collapsing inward. Lower your back knee until it nearly touches the ground. Push off through your front heel to stand."
+        muscleGroup: "Chest/Triceps",
+        tip: "Lie on the floor and press dumbbells. The floor stops your elbows at 90 degrees, completely removing shoulder strain while allowing you to load the chest and triceps heavy."
       },
       {
         id: "sun_r2",
         category: "Resistance",
-        name: "Leg Extensions",
+        name: "Single Arm Dumbbell Row",
         sets: 3,
-        reps: "12-15",
+        reps: "10-12 per arm",
         defaultRest: 60,
-        muscleGroup: "Quads",
-        tip: "Adjust the pad so it sits on your lower shins. Extend fully and squeeze the contraction hard at the top for 1 second. Lower with a slow 3-second eccentric. Avoid swinging or using momentum."
+        muscleGroup: "Back (Lats)",
+        tip: "Support yourself on a bench. Focus on pulling the elbow to the hip. Keep the torso stable to protect the spine. Excellent for fixing left/right strength imbalances."
       },
       {
         id: "sun_r3",
         category: "Resistance",
-        name: "Lying Leg Curls",
+        name: "Goblet Squats",
         sets: 3,
-        reps: "10-12",
+        reps: "12-15",
         defaultRest: 60,
-        muscleGroup: "Hamstrings",
-        tip: "Keep your hips pressed flat against the pad throughout. Curl the weight up by contracting your hamstrings, not by lifting your hips. Squeeze at the top, then lower under strict control."
+        muscleGroup: "Quads/Core",
+        tip: "Hold a dumbbell or kettlebell vertically at your chest. This front-loaded position forces your abs to work overtime and naturally keeps your torso upright, saving the back."
       },
       {
         id: "sun_r4",
         category: "Resistance",
-        name: "Glute Bridges or Hip Thrusts",
+        name: "Cable Woodchoppers",
         sets: 3,
-        reps: "12-15",
+        reps: "12 per side",
         defaultRest: 60,
-        muscleGroup: "Glutes",
-        tip: "Drive through your heels and squeeze your glutes at the top for 2 seconds. Keep your chin tucked and ribs down—avoid hyperextending your lower back. Use a barbell pad for comfort under heavier loads."
+        muscleGroup: "Obliques/Core",
+        tip: "Set cable high, chop diagonally down across your body. Keep arms mostly straight. This rotational movement carves out the obliques and side-abs."
       },
       {
         id: "sun_r5",
         category: "Resistance",
-        name: "Hanging Leg Raises or Crunches",
+        name: "Plank with Shoulder Taps",
         sets: 3,
-        reps: "To failure",
+        reps: "20 taps total",
         defaultRest: 60,
         muscleGroup: "Core",
-        tip: "For leg raises: curl your pelvis upward at the top of the movement. For crunches: focus on lifting your shoulder blades off the floor using your abs, not pulling on your neck."
+        tip: "Hold a pushup position. Tap your left shoulder with your right hand, then switch. Keep your hips completely still—don't let them sway. Ultimate anti-rotation ab builder."
       },
       {
         id: "sun_c1",
-        category: "Cardio",
-        name: "Treadmill Incline Walk",
-        duration: "15-20 mins",
+        category: "HIIT",
+        name: "Battle Ropes or Sled Push",
+        duration: "10 mins",
         defaultRest: 0,
-        details: "Speed 5.5-6.5 km/h, Incline 8-12%, HR 120-140 bpm",
-        tip: "End your week strong with an aggressive incline. Keep arms free, maintain upright posture. This final Zone 2 session maximizes the metabolic afterburn from your Sunday resistance volume."
+        details: "10 Rounds: 20s Max Effort → 40s Rest",
+        tip: "A brutal finisher. Burns massive calories and depletes glycogen to ensure your body is pulling from fat stores, all with zero impact on your joints."
       }
     ]
   }
