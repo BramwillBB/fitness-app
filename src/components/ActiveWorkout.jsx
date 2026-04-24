@@ -9,22 +9,22 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
     const buildInitialLogs = () => {
         const logs = {};
         program.workouts.forEach(ex => {
-            const prev = previousLogs[ex.id];
+            const prevSets = previousLogs[ex.id] || [];
             if (ex.category === 'Resistance') {
                 const numSets = ex.sets || 3;
                 logs[ex.id] = Array.from({ length: numSets }, (_, i) => ({
                     setNum: i + 1,
-                    weight: prev?.weight ?? '',
-                    reps: prev?.reps ?? '',
+                    weight: prevSets[i]?.weight ?? '',
+                    reps: prevSets[i]?.reps ?? '',
                     completed: false,
                 }));
             } else {
                 // Cardio / HIIT
                 logs[ex.id] = [{
                     setNum: 1,
-                    duration: prev?.duration ?? '',
-                    distance: prev?.distance ?? '',
-                    avgHR: prev?.avgHR ?? '',
+                    duration: prevSets[0]?.duration ?? '',
+                    distance: prevSets[0]?.distance ?? '',
+                    avgHR: prevSets[0]?.avgHR ?? '',
                     completed: false,
                 }];
             }
