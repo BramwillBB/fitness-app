@@ -9,9 +9,10 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
     const buildInitialLogs = () => {
         const logs = {};
         program.workouts.forEach(ex => {
-            const prevSets = previousLogs[ex.id] || [];
+            let prevData = previousLogs[ex.id];
+            const numSets = ex.sets || 3;
+            const prevSets = Array.isArray(prevData) ? prevData : (prevData ? Array(numSets).fill(prevData) : []);
             if (ex.category === 'Resistance') {
-                const numSets = ex.sets || 3;
                 logs[ex.id] = Array.from({ length: numSets }, (_, i) => ({
                     setNum: i + 1,
                     weight: '',
@@ -55,7 +56,8 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
             const isCompleting = !currentSet.completed;
             
             if (isCompleting) {
-                const prevSets = previousLogs[exerciseId] || [];
+                let prevData = previousLogs[exerciseId];
+                const prevSets = Array.isArray(prevData) ? prevData : (prevData ? Array(updated[exerciseId].length).fill(prevData) : []);
                 const prevSet = prevSets[setIndex];
                 
                 if (prevSet) {
@@ -119,7 +121,8 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
             {/* Exercise List */}
             {program.workouts.map(exercise => {
                 const sets = exerciseLogs[exercise.id] || [];
-                const prevSets = previousLogs[exercise.id] || [];
+                let prevData = previousLogs[exercise.id];
+                const prevSets = Array.isArray(prevData) ? prevData : (prevData ? Array(sets.length).fill(prevData) : []);
                 const allDone = sets.every(s => s.completed);
                 const isExpanded = activeExercise === exercise.id;
                 const isResistance = exercise.category === 'Resistance';

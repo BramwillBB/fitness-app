@@ -40,10 +40,8 @@ function App() {
       if (isCardio) {
         prevLogs[exId] = { duration: sets[0].duration, distance: sets[0].distance, avgHR: sets[0].avgHR };
       } else {
-        const lastCompleted = [...sets].reverse().find(s => s.completed);
-        if (lastCompleted) {
-          prevLogs[exId] = { weight: lastCompleted.weight, reps: lastCompleted.reps };
-        }
+        // Save the array of sets so each set's historical data is preserved
+        prevLogs[exId] = sets.map(s => ({ weight: s.weight, reps: s.reps }));
       }
     });
     updatePreviousLogs(prevLogs);
