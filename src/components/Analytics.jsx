@@ -30,8 +30,25 @@ const Analytics = ({ workoutHistory, gamification }) => {
         ? Math.round(workoutHistory.reduce((sum, w) => sum + (w.progressPercent || 0), 0) / totalWorkouts)
         : 0;
 
-    // Last 4 workouts for mini chart
-    const recentWorkouts = workoutHistory.slice(-4);
+    // Fun fact generators
+    const getVolumeFunFact = (kg) => {
+        if (kg === 0) return "Ready to lift!";
+        if (kg < 500) return "A Grand Piano 🎹";
+        if (kg < 1500) return "A Polar Bear 🐻‍❄️";
+        if (kg < 3000) return "A Rhinoceros 🦏";
+        if (kg < 6000) return "An Elephant 🐘";
+        if (kg < 12000) return "A T-Rex 🦖";
+        return "A Space Shuttle 🚀";
+    };
+
+    const getTimeFunFact = (mins) => {
+        if (mins === 0) return "Time to start!";
+        if (mins < 60) return "A Sitcom Episode 📺";
+        if (mins < 180) return "A Feature Film 🎬";
+        if (mins < 600) return "Lord of the Rings Marathon 🧝‍♂️";
+        if (mins < 1440) return "A Flight across the World ✈️";
+        return "A Literal Marathon 🏃‍♂️";
+    };
 
     return (
         <section className="analytics">
@@ -61,51 +78,25 @@ const Analytics = ({ workoutHistory, gamification }) => {
                 </div>
             </div>
 
-            {/* Lifetime Stats */}
-            <div className="analytics-stats-grid">
-                <div className="card metric-card">
-                    <span className="metric-label">Workouts</span>
-                    <span className="metric-value">{totalWorkouts}</span>
-                </div>
-                <div className="card metric-card">
-                    <span className="metric-label">Total Time</span>
-                    <span className="metric-value">{totalDuration} min</span>
-                </div>
-                <div className="card metric-card">
-                    <span className="metric-label">Volume Lifted</span>
-                    <span className="metric-value">{Math.round(totalVolume).toLocaleString()} kg</span>
-                </div>
-                <div className="card metric-card">
-                    <span className="metric-label">Avg Completion</span>
-                    <span className="metric-value">{avgCompletion}%</span>
-                </div>
-            </div>
-
-            {/* Recent Workouts Mini History */}
-            {recentWorkouts.length > 0 && (
-                <div className="card" style={{ marginTop: 'var(--spacing-2)' }}>
-                    <h3 style={{ marginBottom: 'var(--spacing-2)' }}>Recent Sessions</h3>
-                    <div className="recent-sessions">
-                        {recentWorkouts.map((w, i) => (
-                            <div key={i} className="recent-session-row">
-                                <div>
-                                    <span style={{ fontWeight: 600 }}>{w.day}</span>
-                                    <span className="text-muted" style={{ marginLeft: '8px', fontSize: '0.8rem' }}>
-                                        {new Date(w.date).toLocaleDateString()}
-                                    </span>
-                                </div>
-                                <div style={{ display: 'flex', gap: 'var(--spacing-2)', alignItems: 'center' }}>
-                                    <span className="text-muted">{w.duration}min</span>
-                                    <div className="mini-progress-bg">
-                                        <div className="mini-progress-fill" style={{ width: `${w.progressPercent}%` }}></div>
-                                    </div>
-                                    <span style={{ fontWeight: 600, minWidth: '36px', textAlign: 'right' }}>{w.progressPercent}%</span>
-                                </div>
-                            </div>
-                        ))}
+            {/* Fun Lifetime Stats */}
+            <div className="analytics-stats-grid" style={{ gridTemplateColumns: '1fr' }}>
+                <div className="card metric-card" style={{ alignItems: 'flex-start' }}>
+                    <span className="metric-label">Total Volume Lifted</span>
+                    <span className="metric-value" style={{ color: 'var(--color-primary)' }}>{Math.round(totalVolume).toLocaleString()} kg</span>
+                    <div style={{ marginTop: '8px', padding: '8px', background: 'var(--color-bg)', borderRadius: 'var(--radius-sm)', width: '100%' }}>
+                        <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>💡 Fun Fact:</span>
+                        <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>You've lifted the equivalent of <strong>{getVolumeFunFact(totalVolume)}</strong></p>
                     </div>
                 </div>
-            )}
+                <div className="card metric-card" style={{ alignItems: 'flex-start' }}>
+                    <span className="metric-label">Total Time Training</span>
+                    <span className="metric-value" style={{ color: 'var(--color-secondary)' }}>{totalDuration} min</span>
+                    <div style={{ marginTop: '8px', padding: '8px', background: 'var(--color-bg)', borderRadius: 'var(--radius-sm)', width: '100%' }}>
+                        <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>💡 Fun Fact:</span>
+                        <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>You've been working out for the length of <strong>{getTimeFunFact(totalDuration)}</strong></p>
+                    </div>
+                </div>
+            </div>
         </section>
     );
 };
