@@ -223,29 +223,31 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
                                                 ⏱️ Start Interval Timer
                                             </button>
                                         )}
-                                        <div className="cardio-log-grid">
-                                            <div className="cardio-field">
-                                                <label>Duration (min)</label>
-                                                <input type="number" className="set-input" placeholder="mins"
-                                                    value={sets[0]?.duration ?? ''}
-                                                    onChange={e => updateSetField(exercise.id, 0, 'duration', e.target.value)}
-                                                />
+                                        {exercise.category === 'Cardio' && (
+                                            <div className="cardio-log-grid">
+                                                <div className="cardio-field">
+                                                    <label>Duration (min)</label>
+                                                    <input type="number" className="set-input" placeholder="mins"
+                                                        value={sets[0]?.duration ?? ''}
+                                                        onChange={e => updateSetField(exercise.id, 0, 'duration', e.target.value)}
+                                                    />
+                                                </div>
+                                                <div className="cardio-field">
+                                                    <label>Distance (km)</label>
+                                                    <input type="number" className="set-input" placeholder="km" step="0.1"
+                                                        value={sets[0]?.distance ?? ''}
+                                                        onChange={e => updateSetField(exercise.id, 0, 'distance', e.target.value)}
+                                                    />
+                                                </div>
+                                                <div className="cardio-field">
+                                                    <label>Avg HR (bpm)</label>
+                                                    <input type="number" className="set-input" placeholder="bpm"
+                                                        value={sets[0]?.avgHR ?? ''}
+                                                        onChange={e => updateSetField(exercise.id, 0, 'avgHR', e.target.value)}
+                                                    />
+                                                </div>
                                             </div>
-                                            <div className="cardio-field">
-                                                <label>Distance (km)</label>
-                                                <input type="number" className="set-input" placeholder="km" step="0.1"
-                                                    value={sets[0]?.distance ?? ''}
-                                                    onChange={e => updateSetField(exercise.id, 0, 'distance', e.target.value)}
-                                                />
-                                            </div>
-                                            <div className="cardio-field">
-                                                <label>Avg HR (bpm)</label>
-                                                <input type="number" className="set-input" placeholder="bpm"
-                                                    value={sets[0]?.avgHR ?? ''}
-                                                    onChange={e => updateSetField(exercise.id, 0, 'avgHR', e.target.value)}
-                                                />
-                                            </div>
-                                        </div>
+                                        )}
                                         <button
                                             className={`set-done-btn cardio-done-btn ${sets[0]?.completed ? 'checked' : ''}`}
                                             onClick={() => markSetDone(exercise.id, 0)}
