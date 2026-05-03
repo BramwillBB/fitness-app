@@ -207,6 +207,18 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
                                 ) : (
                                     /* Cardio / HIIT Logging */
                                     <div className="cardio-log">
+                                        {exercise.details && (
+                                            <div className="cardio-instructions">
+                                                <span className="cardio-instructions-label">📋 Instructions</span>
+                                                <p className="cardio-instructions-text">{exercise.details}</p>
+                                            </div>
+                                        )}
+                                        {exercise.tip && (
+                                            <div className="cardio-coaching-tip">
+                                                <span className="cardio-coaching-label">💡 Coaching Tip</span>
+                                                <p className="cardio-coaching-text">{exercise.tip}</p>
+                                            </div>
+                                        )}
                                         <div className="cardio-log-grid">
                                             <div className="cardio-field">
                                                 <label>Duration (min)</label>

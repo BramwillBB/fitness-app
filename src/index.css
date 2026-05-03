@@ -528,6 +528,51 @@ h3 {
   margin-bottom: var(--spacing-2);
 }
 
+.cardio-instructions {
+  background: rgba(0, 210, 255, 0.06);
+  border: 1px solid rgba(0, 210, 255, 0.15);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
+}
+
+.cardio-instructions-label {
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.cardio-instructions-text {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  line-height: 1.4;
+}
+
+.cardio-coaching-tip {
+  background: rgba(255, 165, 0, 0.06);
+  border: 1px solid rgba(255, 165, 0, 0.15);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
+}
+
+.cardio-coaching-label {
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.cardio-coaching-text {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
 .cardio-log-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
