@@ -1,12 +1,9 @@
 // src/components/WorkoutSummary.jsx
 import React from 'react';
-import { GAMIFICATION } from '../data/program';
 
 const WorkoutSummary = ({ summary, gamification, onClose }) => {
     // summary: { day, focus, date, duration, logs, totalSets, completedSets, progressPercent }
-    // gamification: { xp, streak, xpEarned, levelUp, currentLevel }
-
-    const currentLevel = GAMIFICATION.levels.find(l => l.level === gamification.currentLevel) || GAMIFICATION.levels[0];
+    // gamification: { streak, rankUp, currentRank, nextRank, totalWorkouts }
 
     // Build per-exercise summary
     const exerciseSummaries = [];
@@ -49,18 +46,22 @@ const WorkoutSummary = ({ summary, gamification, onClose }) => {
                 <p className="text-muted">{summary.day} — {summary.focus}</p>
             </div>
 
-            {/* XP & Level */}
+            {/* Rank & Streak */}
             <div className="summary-gamification card">
                 <div className="summary-xp-row">
                     <div>
-                        <span className="xp-earned">+{gamification.xpEarned} XP Earned</span>
-                        {gamification.levelUp && <span className="level-up-badge">🎖️ Level Up!</span>}
+                        <span className="xp-earned">{gamification.currentRank?.badge} {gamification.currentRank?.title}</span>
+                        {gamification.rankUp && <span className="level-up-badge">🎖️ Rank Up!</span>}
                     </div>
                     <div className="current-level">
-                        <span className="level-badge">{currentLevel.badge}</span>
-                        <span>Lv.{currentLevel.level} {currentLevel.title}</span>
+                        <span>Workout #{gamification.totalWorkouts}</span>
                     </div>
                 </div>
+                {gamification.nextRank && (
+                    <div style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginTop: '4px' }}>
+                        {gamification.nextRank.minWorkouts - gamification.totalWorkouts} more to reach {gamification.nextRank.badge} {gamification.nextRank.title}
+                    </div>
+                )}
                 <div className="summary-streak">
                     🔥 Streak: {gamification.streak} {gamification.streak === 1 ? 'workout' : 'workouts'}
                 </div>

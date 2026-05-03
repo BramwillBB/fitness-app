@@ -1,19 +1,13 @@
 // src/components/Analytics.jsx
 import React from 'react';
-import { GAMIFICATION } from '../data/program';
+import { MILESTONES } from '../data/program';
 import ProgressBar from './ProgressBar';
 
 const Analytics = ({ workoutHistory, gamification }) => {
-    const currentLevel = GAMIFICATION.levels.find(l => l.xpRequired <= gamification.xp);
-    const nextLevel = GAMIFICATION.levels.find(l => l.xpRequired > gamification.xp);
-    const xpToNext = nextLevel ? nextLevel.xpRequired - gamification.xp : 0;
-    const xpInLevel = nextLevel ? gamification.xp - (currentLevel?.xpRequired || 0) : gamification.xp;
-    const xpLevelRange = nextLevel ? nextLevel.xpRequired - (currentLevel?.xpRequired || 0) : 1;
-
-    // Calculate total stats from history
     const totalWorkouts = workoutHistory.length;
-    const totalDuration = workoutHistory.reduce((sum, w) => sum + (w.duration || 0), 0);
+    const streak = gamification.streak || 0;
 
+    // Calculate total volume from history
     const totalVolume = workoutHistory.reduce((sum, w) => {
         if (!w.logs) return sum;
         return sum + Object.values(w.logs).reduce((exerciseSum, sets) => {
@@ -26,9 +20,24 @@ const Analytics = ({ workoutHistory, gamification }) => {
         }, 0);
     }, 0);
 
-    const avgCompletion = totalWorkouts > 0
-        ? Math.round(workoutHistory.reduce((sum, w) => sum + (w.progressPercent || 0), 0) / totalWorkouts)
-        : 0;
+    const totalDuration = workoutHistory.reduce((sum, w) => sum + (w.duration || 0), 0);
+    const hadPerfectWorkout = workoutHistory.some(w => w.progressPercent === 100);
+
+    // Determine current rank from workout count
+    const currentRank = [...MILESTONES.ranks].reverse().find(r => totalWorkouts >= r.minWorkouts) || MILESTONES.ranks[0];
+    const nextRank = MILESTONES.ranks.find(r => r.minWorkouts > totalWorkouts);
+    const workoutsToNext = nextRank ? nextRank.minWorkouts - totalWorkouts : 0;
+    const progressInRank = nextRank
+        ? totalWorkouts - currentRank.minWorkouts
+        : 1;
+    const rangeInRank = nextRank
+        ? nextRank.minWorkouts - currentRank.minWorkouts
+        : 1;
+
+    // Check achievements
+    const stats = { totalWorkouts, streak, totalVolume, hadPerfectWorkout };
+    const unlockedAchievements = MILESTONES.achievements.filter(a => a.check(stats));
+    const lockedAchievements = MILESTONES.achievements.filter(a => !a.check(stats));
 
     // Fun fact generators
     const getVolumeFunFact = (kg) => {
@@ -52,34 +61,56 @@ const Analytics = ({ workoutHistory, gamification }) => {
 
     return (
         <section className="analytics">
-            <h2>Smart Analytics</h2>
+            <h2>Your Progress</h2>
 
-            {/* Level & XP Card */}
+            {/* Rank Card */}
             <div className="card analytics-level-card">
                 <div className="level-display">
-                    <span className="level-emoji">{currentLevel?.badge || '🌱'}</span>
+                    <span className="level-emoji">{currentRank.badge}</span>
                     <div>
-                        <h3>Lv.{currentLevel?.level || 1} — {currentLevel?.title || 'Beginner'}</h3>
-                        <span className="text-muted">{gamification.xp} XP Total</span>
+                        <h3>{currentRank.title}</h3>
+                        <span className="text-muted">{currentRank.tagline}</span>
                     </div>
                 </div>
-                {nextLevel && (
+                {nextRank && (
                     <div style={{ marginTop: 'var(--spacing-2)' }}>
                         <ProgressBar
-                            current={xpInLevel}
-                            total={xpLevelRange}
-                            label={`${xpToNext} XP to Lv.${nextLevel.level} ${nextLevel.title}`}
+                            current={progressInRank}
+                            total={rangeInRank}
+                            label={`${workoutsToNext} workout${workoutsToNext !== 1 ? 's' : ''} to ${nextRank.badge} ${nextRank.title}`}
                         />
                     </div>
                 )}
                 <div className="streak-display">
                     <span className="streak-fire">🔥</span>
-                    <span>{gamification.streak} Workout Streak</span>
+                    <span>{streak} Workout Streak</span>
+                </div>
+                <div style={{ display: 'flex', gap: 'var(--spacing-2)', marginTop: '8px', fontSize: '0.9rem', color: 'var(--color-text-muted)' }}>
+                    <span>🏋️ {totalWorkouts} workout{totalWorkouts !== 1 ? 's' : ''} completed</span>
+                </div>
+            </div>
+
+            {/* Achievements */}
+            <div className="card" style={{ marginTop: 'var(--spacing-2)' }}>
+                <h3 style={{ marginBottom: 'var(--spacing-2)' }}>Achievements</h3>
+                <div className="achievements-grid">
+                    {unlockedAchievements.map(a => (
+                        <div key={a.id} className="achievement-item unlocked" title={a.description}>
+                            <span className="achievement-badge">{a.badge}</span>
+                            <span className="achievement-title">{a.title}</span>
+                        </div>
+                    ))}
+                    {lockedAchievements.map(a => (
+                        <div key={a.id} className="achievement-item locked" title={a.description}>
+                            <span className="achievement-badge">🔒</span>
+                            <span className="achievement-title">{a.description}</span>
+                        </div>
+                    ))}
                 </div>
             </div>
 
             {/* Fun Lifetime Stats */}
-            <div className="analytics-stats-grid" style={{ gridTemplateColumns: '1fr' }}>
+            <div className="analytics-stats-grid" style={{ gridTemplateColumns: '1fr', marginTop: 'var(--spacing-2)' }}>
                 <div className="card metric-card" style={{ alignItems: 'flex-start' }}>
                     <span className="metric-label">Total Volume Lifted</span>
                     <span className="metric-value" style={{ color: 'var(--color-primary)' }}>{Math.round(totalVolume).toLocaleString()} kg</span>

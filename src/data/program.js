@@ -239,18 +239,25 @@ export const exerciseProgram = [
   }
 ];
 
-export const GAMIFICATION = {
-  xpPerExercise: 15,
-  xpPerWorkoutComplete: 100,
-  xpPerStreak: 50,
-  levels: [
-    { level: 1, title: "Beginner", xpRequired: 0, badge: "🌱" },
-    { level: 2, title: "Committed", xpRequired: 200, badge: "💪" },
-    { level: 3, title: "Warrior", xpRequired: 500, badge: "⚔️" },
-    { level: 4, title: "Athlete", xpRequired: 1000, badge: "🏋️" },
-    { level: 5, title: "Elite", xpRequired: 2000, badge: "🔥" },
-    { level: 6, title: "Champion", xpRequired: 3500, badge: "🏆" },
-    { level: 7, title: "Legend", xpRequired: 5500, badge: "👑" },
-    { level: 8, title: "Ironclad", xpRequired: 8000, badge: "⚡" }
-  ]
+export const MILESTONES = {
+  ranks: [
+    { title: "Newbie", minWorkouts: 0, badge: "🌱", tagline: "Every journey starts with a single rep" },
+    { title: "Regular", minWorkouts: 5, badge: "💪", tagline: "Consistency is building" },
+    { title: "Warrior", minWorkouts: 15, badge: "⚔️", tagline: "Nothing can stop you now" },
+    { title: "Athlete", minWorkouts: 30, badge: "🏋️", tagline: "You train like a pro" },
+    { title: "Beast Mode", minWorkouts: 50, badge: "🔥", tagline: "Unstoppable force" },
+    { title: "Champion", minWorkouts: 75, badge: "🏆", tagline: "Top 1% dedication" },
+    { title: "Legend", minWorkouts: 100, badge: "👑", tagline: "Hall of fame material" },
+    { title: "Ironclad", minWorkouts: 150, badge: "⚡", tagline: "Forged in iron" },
+  ],
+  achievements: [
+    { id: "first_workout", title: "First Step", badge: "👟", description: "Complete your first workout", check: (stats) => stats.totalWorkouts >= 1 },
+    { id: "five_workouts", title: "Getting Hooked", badge: "🪝", description: "Complete 5 workouts", check: (stats) => stats.totalWorkouts >= 5 },
+    { id: "ten_workouts", title: "Double Digits", badge: "🔟", description: "Complete 10 workouts", check: (stats) => stats.totalWorkouts >= 10 },
+    { id: "streak_3", title: "Hat Trick", badge: "🎩", description: "Hit a 3-day streak", check: (stats) => stats.streak >= 3 },
+    { id: "streak_7", title: "Full Week", badge: "📅", description: "Hit a 7-day streak", check: (stats) => stats.streak >= 7 },
+    { id: "volume_1000", title: "Ton Club", badge: "🏗️", description: "Lift 1,000 kg total", check: (stats) => stats.totalVolume >= 1000 },
+    { id: "volume_10000", title: "Heavy Hitter", badge: "💎", description: "Lift 10,000 kg total", check: (stats) => stats.totalVolume >= 10000 },
+    { id: "perfect_workout", title: "Perfectionist", badge: "✨", description: "Complete a workout at 100%", check: (stats) => stats.hadPerfectWorkout },
+  ],
 };

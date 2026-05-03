@@ -7,7 +7,7 @@ import WorkoutSummary from './components/WorkoutSummary';
 import { useAuth } from './hooks/useAuth';
 import { useFirestore } from './hooks/useFirestore';
 import { useWakeLock } from './hooks/useWakeLock';
-import { GAMIFICATION } from './data/program';
+import { MILESTONES } from './data/program';
 import './index.css';
 
 function App() {
@@ -50,25 +50,21 @@ function App() {
     const updatedHistory = [...workoutHistory, summary];
     updateWorkoutHistory(updatedHistory);
 
-    // Gamification calculations
-    const completedCount = summary.completedSets;
-    let xpEarned = completedCount * GAMIFICATION.xpPerExercise;
-    if (summary.progressPercent === 100) xpEarned += GAMIFICATION.xpPerWorkoutComplete;
-
+    // Streak calculation
     const today = new Date().toDateString();
-    let newStreak = gamification.streak;
+    let newStreak = gamification.streak || 0;
     if (gamification.lastWorkoutDate !== today) {
       newStreak += 1;
-      xpEarned += GAMIFICATION.xpPerStreak;
     }
 
-    const newXp = gamification.xp + xpEarned;
-    const oldLevel = GAMIFICATION.levels.filter(l => l.xpRequired <= gamification.xp).pop();
-    const newLevel = GAMIFICATION.levels.filter(l => l.xpRequired <= newXp).pop();
-    const levelUp = newLevel.level > (oldLevel?.level || 0);
+    // Determine rank from total workout count
+    const totalWorkouts = updatedHistory.length;
+    const currentRank = [...MILESTONES.ranks].reverse().find(r => totalWorkouts >= r.minWorkouts) || MILESTONES.ranks[0];
+    const nextRank = MILESTONES.ranks.find(r => r.minWorkouts > totalWorkouts);
+    const oldRank = [...MILESTONES.ranks].reverse().find(r => workoutHistory.length >= r.minWorkouts) || MILESTONES.ranks[0];
+    const rankUp = currentRank.title !== oldRank.title;
 
     const updatedGam = {
-      xp: newXp,
       streak: newStreak,
       lastWorkoutDate: today,
       badges: gamification.badges || [],
@@ -76,7 +72,7 @@ function App() {
     updateGamification(updatedGam);
 
     setLastSummary(summary);
-    setLastGamResult({ xpEarned, streak: newStreak, levelUp, currentLevel: newLevel.level, xp: newXp });
+    setLastGamResult({ streak: newStreak, rankUp, currentRank, nextRank, totalWorkouts });
     setView('summary');
   };
 
