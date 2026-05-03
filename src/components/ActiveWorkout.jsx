@@ -14,8 +14,8 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
                 const numSets = ex.sets || 3;
                 logs[ex.id] = Array.from({ length: numSets }, (_, i) => ({
                     setNum: i + 1,
-                    weight: prevSets[i]?.weight ?? '',
-                    reps: prevSets[i]?.reps ?? '',
+                    weight: '',
+                    reps: '',
                     completed: false,
                 }));
             } else {
@@ -144,28 +144,25 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
                                 {isResistance ? (
                                     <div className="set-log-grid">
                                         <div className="set-log-header">
-                                            <span>Set</span><span>Previous</span><span>Weight (kg)</span><span>Reps</span><span>Done</span>
+                                            <span>Set</span><span>Weight (kg)</span><span>Reps</span><span>Done</span>
                                         </div>
                                         {sets.map((set, i) => (
                                             <div key={i} className={`set-log-row ${set.completed ? 'set-completed' : ''}`}>
                                                 <span className="set-num">{set.setNum}</span>
-                                                <div className="prev-log-display">
-                                                    {prevSets[i] && (prevSets[i].weight || prevSets[i].reps) 
-                                                        ? `${prevSets[i].weight || 0}kg × ${prevSets[i].reps || 0}` 
-                                                        : '-'}
-                                                </div>
                                                 <input
-                                                    type="number"
+                                                    type="text"
+                                                    inputMode="decimal"
                                                     className="set-input"
-                                                    placeholder="kg"
+                                                    placeholder={prevSets[i]?.weight ? `Last: ${prevSets[i].weight}` : "kg"}
                                                     value={set.weight}
                                                     onChange={e => updateSetField(exercise.id, i, 'weight', e.target.value)}
                                                     aria-label={`Weight for set ${set.setNum}`}
                                                 />
                                                 <input
-                                                    type="number"
+                                                    type="text"
+                                                    inputMode="decimal"
                                                     className="set-input"
-                                                    placeholder="reps"
+                                                    placeholder={prevSets[i]?.reps ? `Last: ${prevSets[i].reps}` : "reps"}
                                                     value={set.reps}
                                                     onChange={e => updateSetField(exercise.id, i, 'reps', e.target.value)}
                                                     aria-label={`Reps for set ${set.setNum}`}
