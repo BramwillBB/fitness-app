@@ -25,7 +25,7 @@ const WorkoutSummary = ({ summary, gamification, onClose }) => {
             } else {
                 const completedSets = sets.filter(s => s.completed);
                 const totalVolume = completedSets.reduce((vol, s) => vol + (parseFloat(s.weight) || 0) * (parseInt(s.reps) || 0), 0);
-                const maxWeight = Math.max(0, ...completedSets.map(s => parseFloat(s.weight) || 0));
+                const maxWeight = Math.round(Math.max(0, ...completedSets.map(s => parseFloat(s.weight) || 0)));
                 exerciseSummaries.push({
                     id: exId,
                     isCardio: false,
@@ -90,9 +90,9 @@ const WorkoutSummary = ({ summary, gamification, onClose }) => {
                         <span className="summary-ex-name">{ex.id.replace(/_/g, ' ').toUpperCase()}</span>
                         {ex.isCardio ? (
                             <div className="summary-ex-stats">
-                                {ex.duration && <span>{ex.duration} min</span>}
-                                {ex.distance && <span>{ex.distance} km</span>}
-                                {ex.avgHR && <span>{ex.avgHR} bpm</span>}
+                                {ex.duration && <span>{Math.round(parseFloat(ex.duration))} min</span>}
+                                {ex.distance && <span>{Math.round(parseFloat(ex.distance))} km</span>}
+                                {ex.avgHR && <span>{Math.round(parseFloat(ex.avgHR))} bpm</span>}
                                 <span className={ex.completed ? 'stat-good' : 'stat-miss'}>{ex.completed ? '✓' : '✗'}</span>
                             </div>
                         ) : (

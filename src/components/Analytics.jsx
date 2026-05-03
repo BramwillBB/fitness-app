@@ -73,7 +73,7 @@ const Analytics = ({ workoutHistory, gamification }) => {
                 </div>
                 <div className="card metric-card">
                     <span className="metric-label">Volume Lifted</span>
-                    <span className="metric-value">{totalVolume.toLocaleString()} kg</span>
+                    <span className="metric-value">{Math.round(totalVolume).toLocaleString()} kg</span>
                 </div>
                 <div className="card metric-card">
                     <span className="metric-label">Avg Completion</span>

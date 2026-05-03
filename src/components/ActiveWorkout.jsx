@@ -180,7 +180,7 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
                                                     type="text"
                                                     inputMode="decimal"
                                                     className="set-input"
-                                                    placeholder={prevSets[i]?.weight ? `Last: ${prevSets[i].weight}` : "kg"}
+                                                    placeholder={prevSets[i]?.weight ? `Last: ${Math.round(parseFloat(prevSets[i].weight))}` : "kg"}
                                                     value={set.weight}
                                                     onChange={e => updateSetField(exercise.id, i, 'weight', e.target.value)}
                                                     aria-label={`Weight for set ${set.setNum}`}
@@ -189,7 +189,7 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
                                                     type="text"
                                                     inputMode="decimal"
                                                     className="set-input"
-                                                    placeholder={prevSets[i]?.reps ? `Last: ${prevSets[i].reps}` : "reps"}
+                                                    placeholder={prevSets[i]?.reps ? `Last: ${Math.round(parseFloat(prevSets[i].reps))}` : "reps"}
                                                     value={set.reps}
                                                     onChange={e => updateSetField(exercise.id, i, 'reps', e.target.value)}
                                                     aria-label={`Reps for set ${set.setNum}`}
