@@ -40,23 +40,29 @@ const Analytics = ({ workoutHistory, gamification }) => {
     const lockedAchievements = MILESTONES.achievements.filter(a => !a.check(stats));
 
     // Fun fact generators
+    // Fun facts using real-world equivalents (accurate weights/times)
     const getVolumeFunFact = (kg) => {
-        if (kg === 0) return "Ready to lift!";
-        if (kg < 500) return "A Grand Piano 🎹";
-        if (kg < 1500) return "A Polar Bear 🐻‍❄️";
-        if (kg < 3000) return "A Rhinoceros 🦏";
-        if (kg < 6000) return "An Elephant 🐘";
-        if (kg < 12000) return "A T-Rex 🦖";
-        return "A Space Shuttle 🚀";
+        if (kg === 0) return "Your first rep is waiting! 💪";
+        if (kg < 35) return "A Labrador Retriever 🐕 (~30 kg)";
+        if (kg < 400) return "A Baby Grand Piano 🎹 (~300 kg)";
+        if (kg < 700) return "A Male Polar Bear 🐻‍❄️ (~500 kg)";
+        if (kg < 1500) return "A Small Hatchback Car 🚗 (~1,200 kg)";
+        if (kg < 2500) return "A White Rhinoceros 🦏 (~2,300 kg)";
+        if (kg < 6000) return "An African Elephant 🐘 (~5,000 kg)";
+        if (kg < 15000) return "A T-Rex 🦖 (~8,000 kg)";
+        if (kg < 50000) return "A City Bus 🚌 (~12,000 kg)";
+        return "A Space Shuttle Orbiter 🚀 (~78,000 kg)";
     };
 
     const getTimeFunFact = (mins) => {
-        if (mins === 0) return "Time to start!";
-        if (mins < 60) return "A Sitcom Episode 📺";
-        if (mins < 180) return "A Feature Film 🎬";
-        if (mins < 600) return "Lord of the Rings Marathon 🧝‍♂️";
-        if (mins < 1440) return "A Flight across the World ✈️";
-        return "A Literal Marathon 🏃‍♂️";
+        if (mins === 0) return "Your clock starts now! ⏱️";
+        if (mins < 30) return "A Sitcom Episode 📺 (~22 min)";
+        if (mins < 95) return "A Football Match ⚽ (90 min)";
+        if (mins < 200) return "A Feature Film 🎬 (~2 hours)";
+        if (mins < 400) return "A Full School Day 🏫 (~6 hours)";
+        if (mins < 700) return "The LOTR Extended Trilogy 🧝‍♂️ (~11 hrs)";
+        if (mins < 1440) return "A Flight from Cape Town to London ✈️ (~11.5 hrs)";
+        return "An Entire Day on Earth 🌍 (24 hrs)";
     };
 
     return (
