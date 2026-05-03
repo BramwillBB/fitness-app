@@ -36,6 +36,7 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
     const [exerciseLogs, setExerciseLogs] = useState(buildInitialLogs);
     const [activeExercise, setActiveExercise] = useState(null);
     const [showTip, setShowTip] = useState(null);
+    const [activeTimer, setActiveTimer] = useState(null);
     const [workoutStartTime] = useState(Date.now());
 
     const updateSetField = (exerciseId, setIndex, field, value) => {
@@ -67,6 +68,11 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
                     if (currentSet.reps === '' && prevSet.reps !== undefined) {
                         currentSet.reps = prevSet.reps;
                     }
+                }
+                
+                const exercise = program.workouts.find(ex => ex.id === exerciseId);
+                if (exercise && exercise.defaultRest > 0) {
+                    setActiveTimer(exercise.defaultRest);
                 }
             }
             
@@ -232,11 +238,6 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
                                         </button>
                                     </div>
                                 )}
-
-                                {/* Rest Timer */}
-                                {exercise.defaultRest > 0 && (
-                                    <RestTimer defaultSeconds={exercise.defaultRest} />
-                                )}
                             </div>
                         )}
                     </article>
@@ -247,6 +248,16 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
             <button className="finish-workout-btn" onClick={handleFinish}>
                 🏁 Finish Workout
             </button>
+
+            {/* Rest Timer Modal */}
+            {activeTimer !== null && (
+                <div className="modal-overlay" onClick={() => setActiveTimer(null)}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                        <RestTimer defaultSeconds={activeTimer} autoStart={true} onComplete={() => setActiveTimer(null)} />
+                        <button className="modal-close-btn" onClick={() => setActiveTimer(null)}>Close Timer</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

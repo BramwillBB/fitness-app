@@ -1,17 +1,17 @@
 // src/components/RestTimer.jsx
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 
-const RestTimer = ({ defaultSeconds, onComplete }) => {
+const RestTimer = ({ defaultSeconds, onComplete, autoStart = false }) => {
     const [totalSeconds, setTotalSeconds] = useState(defaultSeconds);
     const [remaining, setRemaining] = useState(defaultSeconds);
-    const [isRunning, setIsRunning] = useState(false);
+    const [isRunning, setIsRunning] = useState(autoStart);
     const intervalRef = useRef(null);
 
     useEffect(() => {
         setTotalSeconds(defaultSeconds);
         setRemaining(defaultSeconds);
-        setIsRunning(false);
-    }, [defaultSeconds]);
+        setIsRunning(autoStart);
+    }, [defaultSeconds, autoStart]);
 
     useEffect(() => {
         if (isRunning && remaining > 0) {
