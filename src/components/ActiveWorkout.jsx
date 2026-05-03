@@ -101,6 +101,7 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
             {/* Exercise List */}
             {program.workouts.map(exercise => {
                 const sets = exerciseLogs[exercise.id] || [];
+                const prevSets = previousLogs[exercise.id] || [];
                 const allDone = sets.every(s => s.completed);
                 const isExpanded = activeExercise === exercise.id;
                 const isResistance = exercise.category === 'Resistance';
@@ -143,11 +144,16 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
                                 {isResistance ? (
                                     <div className="set-log-grid">
                                         <div className="set-log-header">
-                                            <span>Set</span><span>Weight (kg)</span><span>Reps</span><span>Done</span>
+                                            <span>Set</span><span>Previous</span><span>Weight (kg)</span><span>Reps</span><span>Done</span>
                                         </div>
                                         {sets.map((set, i) => (
                                             <div key={i} className={`set-log-row ${set.completed ? 'set-completed' : ''}`}>
                                                 <span className="set-num">{set.setNum}</span>
+                                                <div className="prev-log-display">
+                                                    {prevSets[i] && (prevSets[i].weight || prevSets[i].reps) 
+                                                        ? `${prevSets[i].weight || 0}kg × ${prevSets[i].reps || 0}` 
+                                                        : '-'}
+                                                </div>
                                                 <input
                                                     type="number"
                                                     className="set-input"
