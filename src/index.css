@@ -855,6 +855,132 @@ h3 {
   font-size: 0.75rem;
 }
 
+/* =========================================
+   Interval Timer Modal (HIIT)
+   ========================================= */
+.interval-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--spacing-4);
+  backdrop-filter: blur(4px);
+}
+
+.interval-modal-content {
+  width: 100%;
+  max-width: 400px;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6) var(--spacing-4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: var(--shadow-lg);
+}
+
+.interval-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 1.5rem;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.interval-header h2 {
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-2);
+  opacity: 0.9;
+}
+
+.interval-phase-label {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-4);
+}
+
+.interval-time-display {
+  font-size: 7rem;
+  font-weight: 900;
+  line-height: 1;
+  margin: var(--spacing-4) 0 var(--spacing-6);
+  font-variant-numeric: tabular-nums;
+}
+
+.interval-controls {
+  display: flex;
+  gap: var(--spacing-3);
+  width: 100%;
+}
+
+.interval-btn {
+  flex: 1;
+  padding: var(--spacing-3);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.2);
+  color: inherit;
+  transition: background 0.2s;
+}
+
+.interval-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.interval-btn.stop {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Phase Colors */
+.phase-prepare {
+  background: #3b82f6; /* Blue */
+  color: white;
+}
+.phase-work {
+  background: #ef4444; /* Red - Intense effort */
+  color: white;
+}
+.phase-rest {
+  background: #10b981; /* Green - Recovery */
+  color: white;
+}
+.phase-done {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.start-interval-btn {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-3);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: var(--spacing-4);
+  transition: background-color 0.2s;
+}
+.start-interval-btn:hover {
+  background-color: var(--color-primary-dark);
+}
+
 /* ===================================
    WORKOUT SUMMARY
    =================================== */

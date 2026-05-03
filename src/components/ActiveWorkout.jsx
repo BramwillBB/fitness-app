@@ -1,6 +1,7 @@
 // src/components/ActiveWorkout.jsx
 import React, { useState, useMemo } from 'react';
 import RestTimer from './RestTimer';
+import IntervalTimer from './IntervalTimer';
 
 const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout }) => {
     const previousLogs = prevLogsProp || {};
@@ -37,6 +38,7 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
     const [activeExercise, setActiveExercise] = useState(null);
     const [showTip, setShowTip] = useState(null);
     const [activeTimer, setActiveTimer] = useState(null);
+    const [activeIntervals, setActiveIntervals] = useState(null);
     const [workoutStartTime] = useState(Date.now());
 
     const updateSetField = (exerciseId, setIndex, field, value) => {
@@ -213,6 +215,14 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
                                                 <p className="cardio-instructions-text">{exercise.details}</p>
                                             </div>
                                         )}
+                                        {exercise.intervals && (
+                                            <button 
+                                                className="start-interval-btn"
+                                                onClick={() => setActiveIntervals(exercise.intervals)}
+                                            >
+                                                ⏱️ Start Interval Timer
+                                            </button>
+                                        )}
                                         <div className="cardio-log-grid">
                                             <div className="cardio-field">
                                                 <label>Duration (min)</label>
@@ -263,6 +273,14 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
                         <button className="modal-close-btn" onClick={() => setActiveTimer(null)}>Close Timer</button>
                     </div>
                 </div>
+            )}
+
+            {/* Interval Timer Modal */}
+            {activeIntervals && (
+                <IntervalTimer 
+                    intervals={activeIntervals} 
+                    onClose={() => setActiveIntervals(null)}
+                />
             )}
         </div>
     );

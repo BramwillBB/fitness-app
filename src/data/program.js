@@ -52,7 +52,8 @@ export const exerciseProgram = [
         duration: "10 mins",
         defaultRest: 0,
         details: "10 Rounds: 30s Swings → 30s Rest",
-        tip: "This is a hip hinge, not a squat. Drive the kettlebell up using the power of your glutes and hamstrings. Highly metabolic for maximum fat loss while protecting knees."
+        tip: "This is a hip hinge, not a squat. Drive the kettlebell up using the power of your glutes and hamstrings. Highly metabolic for maximum fat loss while protecting knees.",
+        intervals: { rounds: 10, work: 30, rest: 30 }
       }
     ]
   },
@@ -109,7 +110,8 @@ export const exerciseProgram = [
         duration: "15 mins",
         defaultRest: 0,
         details: "8 Rounds: 20s ALL OUT Sprint → 40s Slow Recovery",
-        tip: "Low impact on the joints but incredibly demanding on the cardiovascular system. Go absolute maximum effort during the 20 seconds. This shreds visceral fat."
+        tip: "Low impact on the joints but incredibly demanding on the cardiovascular system. Go absolute maximum effort during the 20 seconds. This shreds visceral fat.",
+        intervals: { rounds: 8, work: 20, rest: 40 }
       }
     ]
   },
@@ -233,7 +235,8 @@ export const exerciseProgram = [
         duration: "10 mins",
         defaultRest: 0,
         details: "10 Rounds: 20s Max Effort → 40s Rest",
-        tip: "A brutal finisher. Burns massive calories and depletes glycogen to ensure your body is pulling from fat stores, all with zero impact on your joints."
+        tip: "A brutal finisher. Burns massive calories and depletes glycogen to ensure your body is pulling from fat stores, all with zero impact on your joints.",
+        intervals: { rounds: 10, work: 20, rest: 40 }
       }
     ]
   }
