@@ -50,7 +50,25 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout })
         setExerciseLogs(prev => {
             const updated = { ...prev };
             updated[exerciseId] = [...updated[exerciseId]];
-            updated[exerciseId][setIndex] = { ...updated[exerciseId][setIndex], completed: !updated[exerciseId][setIndex].completed };
+            
+            const currentSet = updated[exerciseId][setIndex];
+            const isCompleting = !currentSet.completed;
+            
+            if (isCompleting) {
+                const prevSets = previousLogs[exerciseId] || [];
+                const prevSet = prevSets[setIndex];
+                
+                if (prevSet) {
+                    if (currentSet.weight === '' && prevSet.weight !== undefined) {
+                        currentSet.weight = prevSet.weight;
+                    }
+                    if (currentSet.reps === '' && prevSet.reps !== undefined) {
+                        currentSet.reps = prevSet.reps;
+                    }
+                }
+            }
+            
+            currentSet.completed = isCompleting;
             return updated;
         });
     };
