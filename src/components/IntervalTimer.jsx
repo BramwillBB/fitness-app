@@ -54,6 +54,25 @@ const IntervalTimer = ({ intervals, onComplete, onClose }) => {
     if (phase === "REST") phaseClass = "phase-rest";
     if (phase === "DONE") phaseClass = "phase-done";
 
+    if (phase === "DONE") {
+        return (
+            <div className="interval-modal-overlay" onClick={onClose}>
+                <div className="interval-modal-content phase-done" onClick={(e) => e.stopPropagation()}>
+                    <div className="interval-done-celebration">
+                        <div className="interval-done-icon">✓</div>
+                        <h2 className="interval-done-title">All Rounds Complete!</h2>
+                        <p className="interval-done-stats">
+                            {intervals.rounds} rounds — {intervals.work}s work / {intervals.rest}s rest
+                        </p>
+                        <button className="interval-done-btn" onClick={onClose}>
+                            🏁 Done
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="interval-modal-overlay" onClick={onClose}>
             <div className={`interval-modal-content ${phaseClass}`} onClick={(e) => e.stopPropagation()}>
@@ -69,13 +88,11 @@ const IntervalTimer = ({ intervals, onComplete, onClose }) => {
                 </div>
 
                 <div className="interval-controls">
-                    {phase !== "DONE" && (
-                        <button className="interval-btn" onClick={() => setIsPaused(!isPaused)}>
-                            {isPaused ? "▶ Resume" : "⏸ Pause"}
-                        </button>
-                    )}
+                    <button className="interval-btn" onClick={() => setIsPaused(!isPaused)}>
+                        {isPaused ? "▶ Resume" : "⏸ Pause"}
+                    </button>
                     <button className="interval-btn stop" onClick={onClose}>
-                        {phase === "DONE" ? "Finish" : "⏹ Stop"}
+                        ⏹ Stop
                     </button>
                 </div>
             </div>

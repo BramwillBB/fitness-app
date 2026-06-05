@@ -85,6 +85,21 @@ export function useFirestore(userId) {
         saveToCloud('previousLogs', newLogs);
     }, [saveToCloud]);
 
+    // In-progress workout persistence
+    const saveInProgressWorkout = useCallback((data) => {
+        saveLocal('vfp-in-progress-workout', data);
+        saveToCloud('inProgressWorkout', data);
+    }, [saveToCloud]);
+
+    const clearInProgressWorkout = useCallback(() => {
+        localStorage.removeItem('vfp-in-progress-workout');
+        saveToCloud('inProgressWorkout', null);
+    }, [saveToCloud]);
+
+    const loadInProgressWorkout = useCallback(() => {
+        return loadLocal('vfp-in-progress-workout', null);
+    }, []);
+
     // Migrate localStorage data to Firestore on first login
     const migrateLocalData = useCallback(async () => {
         if (!userId) return;
@@ -119,5 +134,8 @@ export function useFirestore(userId) {
         updateWorkoutHistory,
         updateGamification,
         updatePreviousLogs,
+        saveInProgressWorkout,
+        clearInProgressWorkout,
+        loadInProgressWorkout,
     };
 }

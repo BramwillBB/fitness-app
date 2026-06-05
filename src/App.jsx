@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AuthScreen from './components/AuthScreen';
 import Dashboard from './components/Dashboard';
 import ActiveWorkout from './components/ActiveWorkout';
@@ -7,7 +7,7 @@ import WorkoutSummary from './components/WorkoutSummary';
 import { useAuth } from './hooks/useAuth';
 import { useFirestore } from './hooks/useFirestore';
 import { useWakeLock } from './hooks/useWakeLock';
-import { MILESTONES } from './data/program';
+import { MILESTONES, exerciseProgram as PROGRAM } from './data/program';
 import './index.css';
 
 function App() {
@@ -19,15 +19,56 @@ function App() {
   const { user, loading: authLoading, error: authError, loginWithGoogle, loginWithEmail, signupWithEmail, logout } = useAuth();
   const {
     workoutHistory, gamification, previousLogs, loading: dataLoading,
-    updateWorkoutHistory, updateGamification, updatePreviousLogs
+    updateWorkoutHistory, updateGamification, updatePreviousLogs,
+    saveInProgressWorkout, clearInProgressWorkout, loadInProgressWorkout,
   } = useFirestore(user?.uid || null);
 
   const { requestWakeLock, releaseWakeLock } = useWakeLock();
+
+  // Restore in-progress workout on mount
+  useEffect(() => {
+    if (dataLoading) return;
+    const saved = loadInProgressWorkout();
+    if (saved && saved.day) {
+      // Find matching program day
+      const matchedProgram = PROGRAM.find(p => p.day === saved.day);
+      if (matchedProgram) {
+        setActiveProgram({ ...matchedProgram, restoredLogs: saved.logs });
+        setView('workout');
+        requestWakeLock();
+      }
+    }
+  }, [dataLoading]);
 
   const handleStartWorkout = (program) => {
     setActiveProgram(program);
     setView('workout');
     requestWakeLock();
+  };
+
+  const handleSaveProgress = (progressData) => {
+    // Save each set's data incrementally to previousLogs
+    const prevLogs = { ...previousLogs };
+    Object.entries(progressData.logs).forEach(([exId, sets]) => {
+      const isCardio = sets[0]?.duration !== undefined;
+      if (isCardio) {
+        prevLogs[exId] = { duration: sets[0].duration, distance: sets[0].distance, avgHR: sets[0].avgHR };
+      } else {
+        // Only save sets that have actual data entered
+        const setsWithData = sets.filter(s => s.weight !== '' || s.reps !== '' || s.completed);
+        if (setsWithData.length > 0) {
+          prevLogs[exId] = sets.map(s => ({ weight: s.weight, reps: s.reps }));
+        }
+      }
+    });
+    updatePreviousLogs(prevLogs);
+    
+    // Also persist the in-progress workout state so it survives page reloads
+    saveInProgressWorkout({
+      day: progressData.day,
+      focus: progressData.focus,
+      logs: progressData.logs,
+    });
   };
 
   const handleFinishWorkout = (summary) => {
@@ -45,6 +86,9 @@ function App() {
       }
     });
     updatePreviousLogs(prevLogs);
+
+    // Clear in-progress workout since it's now complete
+    clearInProgressWorkout();
 
     // Update workout history
     const updatedHistory = [...workoutHistory, summary];
@@ -85,6 +129,7 @@ function App() {
 
   const handleBackToDashboard = () => {
     releaseWakeLock();
+    clearInProgressWorkout();
     setView('dashboard');
     setActiveProgram(null);
   };
@@ -102,27 +147,32 @@ function App() {
   }
 
   return (
-    <div className="app-container">
-      <header>
-        <div>
-          <h1>IronCore</h1>
-          <p className="text-muted">
-            {user ? `Welcome, ${user.displayName || user.email}` : 'Train Smarter. Track Everything.'}
-          </p>
+    <div className={`bg-background text-on-background font-body-md min-h-screen ${view !== 'workout' ? 'pb-24' : ''}`}>
+      {/* TopAppBar Shell */}
+      {view !== 'workout' && (
+      <header className="w-full top-0 sticky bg-background border-b border-surface-variant z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-base">
+        <div className="flex items-center gap-base">
+          <div className="w-10 h-10 rounded-full bg-surface-container overflow-hidden border border-surface-variant flex items-center justify-center text-primary font-bold">
+            {user ? (user.displayName?.[0] || user.email[0]).toUpperCase() : 'IC'}
+          </div>
+          <span className="font-headline-lg text-[24px] font-bold tracking-tighter text-on-surface">
+            IRONCORE
+          </span>
         </div>
-        <div style={{ display: 'flex', gap: 'var(--spacing-1)', alignItems: 'center' }}>
+        <div className="flex items-center gap-md">
           {view === 'workout' && (
-            <button className="header-btn" onClick={handleBackToDashboard} aria-label="Back to dashboard" title="Back to Dashboard">←</button>
+            <button className="material-symbols-outlined text-primary hover:scale-105 transition-transform active:scale-95" onClick={handleBackToDashboard} aria-label="Back to dashboard" title="Back to Dashboard">arrow_back</button>
           )}
           {user ? (
-            <button className="header-btn" onClick={logout} aria-label="Sign out" title="Sign Out">🚪</button>
+            <button className="material-symbols-outlined text-primary hover:scale-105 transition-transform active:scale-95" onClick={logout} aria-label="Sign out" title="Sign Out">logout</button>
           ) : (
-            <button className="header-btn" onClick={() => setView('auth')} aria-label="Sign in" title="Sign In">👤</button>
+            <button className="material-symbols-outlined text-primary hover:scale-105 transition-transform active:scale-95" onClick={() => setView('auth')} aria-label="Sign in" title="Sign In">person</button>
           )}
         </div>
       </header>
+      )}
 
-      <main>
+      <main className={view !== 'workout' ? "max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-md" : ""}>
         {view === 'auth' && (
           <AuthScreen
             onGoogleLogin={loginWithGoogle}
@@ -143,6 +193,7 @@ function App() {
             program={activeProgram}
             previousLogs={previousLogs}
             onFinishWorkout={handleFinishWorkout}
+            onSaveProgress={handleSaveProgress}
           />
         )}
         {view === 'summary' && lastSummary && lastGamResult && (
@@ -154,10 +205,27 @@ function App() {
         )}
       </main>
 
-      <footer style={{ marginTop: 'var(--spacing-5)', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.85rem', paddingBottom: 'var(--spacing-3)' }}>
-        <p>Science-backed training · Built for results</p>
-        {user && <p style={{ fontSize: '0.75rem', marginTop: '4px' }}>☁️ Synced to cloud</p>}
-      </footer>
+      {/* BottomNavBar Shell */}
+      {view !== 'workout' && (
+      <nav className="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 bg-surface-container-lowest/80 backdrop-blur-xl border-t border-surface-variant z-50">
+        <button onClick={() => setView('dashboard')} className={`flex flex-col items-center justify-center rounded-full px-md py-xs transition-all active:scale-90 ${view === 'dashboard' ? 'bg-primary-container text-on-primary-container' : 'text-secondary hover:text-primary'}`}>
+          <span className="material-symbols-outlined">home_app_logo</span>
+          <span className="font-label-sm text-label-sm">Home</span>
+        </button>
+        <button className="flex flex-col items-center justify-center text-secondary px-md py-xs hover:text-primary transition-colors active:scale-90">
+          <span className="material-symbols-outlined">fitness_center</span>
+          <span className="font-label-sm text-label-sm">Workouts</span>
+        </button>
+        <button className="flex flex-col items-center justify-center text-secondary px-md py-xs hover:text-primary transition-colors active:scale-90">
+          <span className="material-symbols-outlined">trending_up</span>
+          <span className="font-label-sm text-label-sm">Progress</span>
+        </button>
+        <button onClick={() => !user && setView('auth')} className={`flex flex-col items-center justify-center rounded-full px-md py-xs transition-all active:scale-90 ${view === 'auth' ? 'bg-primary-container text-on-primary-container' : 'text-secondary hover:text-primary'}`}>
+          <span className="material-symbols-outlined">person</span>
+          <span className="font-label-sm text-label-sm">Profile</span>
+        </button>
+      </nav>
+      )}
     </div>
   );
 }
