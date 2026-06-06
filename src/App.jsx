@@ -194,6 +194,7 @@ function App() {
             previousLogs={previousLogs}
             onFinishWorkout={handleFinishWorkout}
             onSaveProgress={handleSaveProgress}
+            onBackToDashboard={handleBackToDashboard}
           />
         )}
         {view === 'summary' && lastSummary && lastGamResult && (

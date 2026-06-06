@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import RestTimer from './RestTimer';
 import IntervalTimer from './IntervalTimer';
 
-const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout, onSaveProgress }) => {
+const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout, onSaveProgress, onBackToDashboard }) => {
     const previousLogs = prevLogsProp || {};
 
     const buildInitialLogs = () => {
@@ -176,7 +176,8 @@ const ActiveWorkout = ({ program, previousLogs: prevLogsProp, onFinishWorkout, o
                 <div className="flex items-center gap-base">
                     <button onClick={() => {
                         if (currentExerciseIndex > 0) setCurrentExerciseIndex(currentExerciseIndex - 1);
-                    }} className={`active:scale-95 transition-all p-xs ${currentExerciseIndex === 0 ? 'opacity-30 cursor-not-allowed' : ''}`}>
+                        else if (onBackToDashboard) onBackToDashboard();
+                    }} className="active:scale-95 transition-all p-xs">
                         <span className="material-symbols-outlined text-on-surface">arrow_back</span>
                     </button>
                     <h1 className="font-headline-lg-mobile text-[24px] font-bold tracking-tighter text-on-surface truncate max-w-[200px] sm:max-w-[400px]">
