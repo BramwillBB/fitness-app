@@ -9,6 +9,7 @@ import {
     updateProfile
 } from 'firebase/auth';
 import { auth, googleProvider } from '../firebase';
+import { Capacitor } from '@capacitor/core';
 
 export function useAuth() {
     const [user, setUser] = useState(null);
@@ -25,6 +26,10 @@ export function useAuth() {
 
     const loginWithGoogle = async () => {
         setError(null);
+        if (Capacitor.isNativePlatform()) {
+            setError("Google Sign-In is not supported on the mobile app yet. Please use email & password to sign in.");
+            return;
+        }
         try {
             await signInWithPopup(auth, googleProvider);
         } catch (err) {
