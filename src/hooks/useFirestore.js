@@ -20,6 +20,8 @@ export function useFirestore(userId) {
     const [workoutHistory, setWorkoutHistory] = useState([]);
     const [gamification, setGamification] = useState({ xp: 0, streak: 0, lastWorkoutDate: null, badges: [] });
     const [previousLogs, setPreviousLogs] = useState({});
+    const [userProfile, setUserProfile] = useState(null);
+    const [customProgram, setCustomProgram] = useState(null);
     const [loading, setLoading] = useState(true);
 
     // --- Load initial data ---
@@ -29,6 +31,8 @@ export function useFirestore(userId) {
             setWorkoutHistory(loadLocal('vfp-workout-history', []));
             setGamification(loadLocal('vfp-gamification', { xp: 0, streak: 0, lastWorkoutDate: null, badges: [] }));
             setPreviousLogs(loadLocal('vfp-previous-logs', {}));
+            setUserProfile(loadLocal('vfp-user-profile', null));
+            setCustomProgram(loadLocal('vfp-custom-program', null));
             setLoading(false);
             return;
         }
@@ -41,6 +45,8 @@ export function useFirestore(userId) {
                 setWorkoutHistory(data.workoutHistory || []);
                 setGamification(data.gamification || { xp: 0, streak: 0, lastWorkoutDate: null, badges: [] });
                 setPreviousLogs(data.previousLogs || {});
+                setUserProfile(data.userProfile || null);
+                setCustomProgram(data.customProgram || null);
             }
             setLoading(false);
         }, (err) => {
@@ -49,6 +55,8 @@ export function useFirestore(userId) {
             setWorkoutHistory(loadLocal('vfp-workout-history', []));
             setGamification(loadLocal('vfp-gamification', { xp: 0, streak: 0, lastWorkoutDate: null, badges: [] }));
             setPreviousLogs(loadLocal('vfp-previous-logs', {}));
+            setUserProfile(loadLocal('vfp-user-profile', null));
+            setCustomProgram(loadLocal('vfp-custom-program', null));
             setLoading(false);
         });
 
@@ -85,6 +93,18 @@ export function useFirestore(userId) {
         saveToCloud('previousLogs', newLogs);
     }, [saveToCloud]);
 
+    const updateUserProfile = useCallback((profile) => {
+        setUserProfile(profile);
+        saveLocal('vfp-user-profile', profile);
+        saveToCloud('userProfile', profile);
+    }, [saveToCloud]);
+
+    const updateCustomProgram = useCallback((program) => {
+        setCustomProgram(program);
+        saveLocal('vfp-custom-program', program);
+        saveToCloud('customProgram', program);
+    }, [saveToCloud]);
+
     // In-progress workout persistence
     const saveInProgressWorkout = useCallback((data) => {
         saveLocal('vfp-in-progress-workout', data);
@@ -111,12 +131,16 @@ export function useFirestore(userId) {
             const localHistory = loadLocal('vfp-workout-history', []);
             const localGam = loadLocal('vfp-gamification', { xp: 0, streak: 0, lastWorkoutDate: null, badges: [] });
             const localLogs = loadLocal('vfp-previous-logs', {});
+            const localProfile = loadLocal('vfp-user-profile', null);
+            const localProg = loadLocal('vfp-custom-program', null);
 
-            if (localHistory.length > 0 || localGam.xp > 0) {
+            if (localHistory.length > 0 || localGam.xp > 0 || localProfile) {
                 await setDoc(userDocRef, {
                     workoutHistory: localHistory,
                     gamification: localGam,
                     previousLogs: localLogs,
+                    userProfile: localProfile,
+                    customProgram: localProg,
                 }, { merge: true });
             }
         }
@@ -130,10 +154,14 @@ export function useFirestore(userId) {
         workoutHistory,
         gamification,
         previousLogs,
+        userProfile,
+        customProgram,
         loading,
         updateWorkoutHistory,
         updateGamification,
         updatePreviousLogs,
+        updateUserProfile,
+        updateCustomProgram,
         saveInProgressWorkout,
         clearInProgressWorkout,
         loadInProgressWorkout,

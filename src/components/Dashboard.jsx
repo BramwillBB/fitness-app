@@ -1,7 +1,7 @@
 // src/components/Dashboard.jsx
 import React from 'react';
 import Analytics from './Analytics';
-import { exerciseProgram } from '../data/program';
+import { exerciseProgram as DEFAULT_PROGRAM } from '../data/program';
 
 // Exercise icon mapping
 const EXERCISE_ICONS = {
@@ -29,15 +29,39 @@ const MUSCLE_ICONS = {
   'Obliques/Core': '🎯',
 };
 
-const Dashboard = ({ onStartWorkout, workoutHistory, gamification }) => {
+const Dashboard = ({ onStartWorkout, workoutHistory, gamification, program }) => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const dayAbbr = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+    
+    const activeProgram = program && program.length > 0 ? program : DEFAULT_PROGRAM;
     
     // JS dates are 0=Sunday, 1=Monday... We'll map them so Mon=0 ... Sun=6 for a consistent layout
     const now = new Date();
     const todayIndex = now.getDay();
+    // In JS: 0=Sunday, 1=Monday, 2=Tuesday, etc.
+    // If the program days are 'Day 1', 'Day 2', etc. (from programGenerator), we should display the corresponding Day or today's name.
+    // Let's check: if activeProgram uses Day 1/2/3, we search for todayName or fall back to Day 1.
+    // Let's make it search by day name (e.g. 'Tuesday') or map to Day 1/Day 2/Day 3 based on current day of week.
+    // Let's write a small helper to find today's workout in both styles:
     const todayName = days[todayIndex];
-    const todayWorkout = exerciseProgram.find(p => p.day === todayName);
+    let todayWorkout = activeProgram.find(p => p.day === todayName);
+    
+    // Fallback if the program is Day 1, Day 2, etc.:
+    if (!todayWorkout && activeProgram.length > 0) {
+        // If it's a 3-day split, we can map: Tuesday -> Day 1, Thursday -> Day 2, Saturday -> Day 3, else Rest Day.
+        // Or we can just find any day or show Day 1/2/3 in the listing.
+        // Let's see: if user has a custom program using Day 1/Day 2, let's map:
+        // Tue -> Day 1, Thu -> Day 2, Sat -> Day 3 (if 3 or 4 days) or simply check if day is today.
+        // Let's map Day 1 to Tuesday, Day 2 to Thursday, Day 3 to Saturday, Day 4 to Sunday.
+        const dayMap = {
+            'Tuesday': 'Day 1',
+            'Thursday': 'Day 2',
+            'Saturday': 'Day 3',
+            'Sunday': 'Day 4'
+        };
+        const mappedDayName = dayMap[todayName];
+        todayWorkout = activeProgram.find(p => p.day === mappedDayName);
+    }
 
     // Build 7-day window around today
     const weekDays = [];
@@ -45,7 +69,20 @@ const Dashboard = ({ onStartWorkout, workoutHistory, gamification }) => {
         const d = new Date(now);
         d.setDate(now.getDate() + i);
         const dayOfWeek = days[d.getDay()];
-        const hasWorkout = exerciseProgram.some(p => p.day === dayOfWeek);
+        
+        // Check if there is a workout on this day:
+        let hasWorkout = activeProgram.some(p => p.day === dayOfWeek);
+        if (!hasWorkout && activeProgram.length > 0) {
+            const dayMap = {
+                'Tuesday': 'Day 1',
+                'Thursday': 'Day 2',
+                'Saturday': 'Day 3',
+                'Sunday': 'Day 4'
+            };
+            const MappedDayName = dayMap[dayOfWeek];
+            hasWorkout = activeProgram.some(p => p.day === MappedDayName);
+        }
+        
         weekDays.push({
             date: d,
             dayName: d.getDay() === 0 ? 'SUN' : d.getDay() === 1 ? 'MON' : d.getDay() === 2 ? 'TUE' : d.getDay() === 3 ? 'WED' : d.getDay() === 4 ? 'THU' : d.getDay() === 5 ? 'FRI' : 'SAT',
@@ -112,7 +149,7 @@ const Dashboard = ({ onStartWorkout, workoutHistory, gamification }) => {
                     <h2 className="font-headline-lg text-[24px]">Full Schedule</h2>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter">
-                    {exerciseProgram.map(program => {
+                    {activeProgram.map(program => {
                         const isToday = program.day === todayName;
                         return (
                             <div key={program.day} className={`group relative p-md rounded-xl overflow-hidden border transition-all duration-300 ${isToday ? 'border-primary bg-primary/5' : 'border-surface-variant bg-surface-container-highest hover:border-primary/50'}`}>

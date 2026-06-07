@@ -8,6 +8,8 @@ import { useAuth } from './hooks/useAuth';
 import { useFirestore } from './hooks/useFirestore';
 import { useWakeLock } from './hooks/useWakeLock';
 import { MILESTONES, exerciseProgram as PROGRAM } from './data/program';
+import Onboarding from './components/Onboarding';
+import { generateProgram } from './utils/programGenerator';
 import './index.css';
 
 function App() {
@@ -18,8 +20,8 @@ function App() {
 
   const { user, loading: authLoading, error: authError, loginWithGoogle, loginWithEmail, signupWithEmail, logout } = useAuth();
   const {
-    workoutHistory, gamification, previousLogs, loading: dataLoading,
-    updateWorkoutHistory, updateGamification, updatePreviousLogs,
+    workoutHistory, gamification, previousLogs, userProfile, customProgram, loading: dataLoading,
+    updateWorkoutHistory, updateGamification, updatePreviousLogs, updateUserProfile, updateCustomProgram,
     saveInProgressWorkout, clearInProgressWorkout, loadInProgressWorkout,
   } = useFirestore(user?.uid || null);
 
@@ -30,15 +32,23 @@ function App() {
     if (dataLoading) return;
     const saved = loadInProgressWorkout();
     if (saved && saved.day) {
-      // Find matching program day
-      const matchedProgram = PROGRAM.find(p => p.day === saved.day);
+      // Find matching program day from customProgram or default PROGRAM
+      const activeProgList = customProgram && customProgram.length > 0 ? customProgram : PROGRAM;
+      const matchedProgram = activeProgList.find(p => p.day === saved.day);
       if (matchedProgram) {
         setActiveProgram({ ...matchedProgram, restoredLogs: saved.logs });
         setView('workout');
         requestWakeLock();
       }
     }
-  }, [dataLoading]);
+  }, [dataLoading, customProgram]);
+
+  const handleOnboardingComplete = (profileData) => {
+    updateUserProfile(profileData);
+    const generated = generateProgram(profileData);
+    updateCustomProgram(generated);
+    setView('dashboard');
+  };
 
   const handleStartWorkout = (program) => {
     setActiveProgram(program);
@@ -146,10 +156,12 @@ function App() {
     );
   }
 
+  const currentEffectiveView = (view !== 'auth' && !userProfile) ? 'onboarding' : view;
+
   return (
-    <div className={`bg-background text-on-background font-body-md min-h-screen ${view !== 'workout' ? 'pb-24' : ''}`}>
+    <div className={`bg-background text-on-background font-body-md min-h-screen ${currentEffectiveView !== 'workout' ? 'pb-24' : ''}`}>
       {/* TopAppBar Shell */}
-      {view !== 'workout' && (
+      {currentEffectiveView !== 'workout' && currentEffectiveView !== 'onboarding' && (
       <header className="w-full top-0 sticky bg-background border-b border-surface-variant z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-base">
         <div className="flex items-center gap-base">
           <div className="w-10 h-10 rounded-full bg-surface-container overflow-hidden border border-surface-variant flex items-center justify-center text-primary font-bold">
@@ -160,9 +172,6 @@ function App() {
           </span>
         </div>
         <div className="flex items-center gap-md">
-          {view === 'workout' && (
-            <button className="material-symbols-outlined text-primary hover:scale-105 transition-transform active:scale-95" onClick={handleBackToDashboard} aria-label="Back to dashboard" title="Back to Dashboard">arrow_back</button>
-          )}
           {user ? (
             <button className="material-symbols-outlined text-primary hover:scale-105 transition-transform active:scale-95" onClick={logout} aria-label="Sign out" title="Sign Out">logout</button>
           ) : (
@@ -172,8 +181,11 @@ function App() {
       </header>
       )}
 
-      <main className={view !== 'workout' ? "max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-md" : ""}>
-        {view === 'auth' && (
+      <main className={currentEffectiveView !== 'workout' && currentEffectiveView !== 'onboarding' ? "max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-md" : ""}>
+        {currentEffectiveView === 'onboarding' && (
+          <Onboarding onComplete={handleOnboardingComplete} />
+        )}
+        {currentEffectiveView === 'auth' && (
           <AuthScreen
             onGoogleLogin={loginWithGoogle}
             onEmailLogin={loginWithEmail}
@@ -181,14 +193,15 @@ function App() {
             error={authError}
           />
         )}
-        {view === 'dashboard' && (
+        {currentEffectiveView === 'dashboard' && (
           <Dashboard
             onStartWorkout={handleStartWorkout}
             workoutHistory={workoutHistory}
             gamification={gamification}
+            program={customProgram}
           />
         )}
-        {view === 'workout' && activeProgram && (
+        {currentEffectiveView === 'workout' && activeProgram && (
           <ActiveWorkout
             program={activeProgram}
             previousLogs={previousLogs}
@@ -197,7 +210,7 @@ function App() {
             onBackToDashboard={handleBackToDashboard}
           />
         )}
-        {view === 'summary' && lastSummary && lastGamResult && (
+        {currentEffectiveView === 'summary' && lastSummary && lastGamResult && (
           <WorkoutSummary
             summary={lastSummary}
             gamification={lastGamResult}
@@ -207,7 +220,7 @@ function App() {
       </main>
 
       {/* BottomNavBar Shell */}
-      {view !== 'workout' && (
+      {currentEffectiveView !== 'workout' && currentEffectiveView !== 'onboarding' && (
       <nav className="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 bg-surface-container-lowest/80 backdrop-blur-xl border-t border-surface-variant z-50">
         <button onClick={() => setView('dashboard')} className={`flex flex-col items-center justify-center rounded-full px-md py-xs transition-all active:scale-90 ${view === 'dashboard' ? 'bg-primary-container text-on-primary-container' : 'text-secondary hover:text-primary'}`}>
           <span className="material-symbols-outlined">home_app_logo</span>
